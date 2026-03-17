@@ -1,0 +1,3 @@
+- [x] **T-1.5 공통 화면 레이아웃 구성**
+  - [x] `frontend-design` 스킬을 활용하여 `header.mustache`, `footer.mustache` 파일 작성 및 공통화 적용
+  - [x] Bootstrap 등을 활용한 기본 레이아웃 템플릿 구조화

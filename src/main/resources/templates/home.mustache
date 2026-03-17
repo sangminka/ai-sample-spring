@@ -1,11 +1,68 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Home</h1>
-</body>
-</html>
+{{> layout/header}}
+
+<main class="site-container">
+    <section class="hero">
+        <div class="hero__panel">
+            <div>
+                <span class="eyebrow">
+                    <i class="fa-solid fa-sparkles"></i>
+                    Editorial Workflow
+                </span>
+                <h1 class="hero__title">글을 쓰고, 모으고, 다시 읽기 좋은 블로그 홈</h1>
+                <p class="hero__description">
+                    복잡한 관리자 화면 대신 선명한 계층, 읽기 쉬운 간격, 일관된 토큰 기반 스타일로
+                    홈 화면을 다시 구성했습니다. 이제 같은 토큰으로 다른 Mustache 화면도 확장할 수 있습니다.
+                </p>
+                <div class="hero__actions">
+                    <a class="button button--primary" href="/board/save-form">
+                        <i class="fa-solid fa-pen"></i>
+                        새 글 작성
+                    </a>
+                    <a class="button button--secondary" href="/login-form">
+                        <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                        로그인
+                    </a>
+                </div>
+            </div>
+            <aside class="hero-card">
+                <div class="hero-card__label">Design Tokens</div>
+                <div class="hero-card__value">24</div>
+                <p class="hero-card__caption">
+                    색상, 간격, 반경, 그림자, 타이포그래피를 토큰화해 헤더와 푸터까지 한 번에 연결했습니다.
+                </p>
+            </aside>
+        </div>
+
+        <div class="feature-grid">
+            <article class="feature-card">
+                <div class="feature-card__icon">
+                    <i class="fa-solid fa-layer-group"></i>
+                </div>
+                <h2>Color System</h2>
+                <p>
+                    브랜드 블루를 중심으로 surface, text, accent 톤을 분리해 레이아웃 전반의 대비를 안정화했습니다.
+                </p>
+            </article>
+            <article class="feature-card">
+                <div class="feature-card__icon">
+                    <i class="fa-solid fa-text-height"></i>
+                </div>
+                <h2>Typography</h2>
+                <p>
+                    본문과 디스플레이 폰트를 분리해 제목은 더 강하게, 본문은 더 차분하게 읽히도록 구성했습니다.
+                </p>
+            </article>
+            <article class="feature-card">
+                <div class="feature-card__icon">
+                    <i class="fa-solid fa-ruler-combined"></i>
+                </div>
+                <h2>Spacing Scale</h2>
+                <p>
+                    --space-* 스케일을 기준으로 여백을 통일해 이후 폼과 목록 화면으로 확장하기 쉬운 기반을 만들었습니다.
+                </p>
+            </article>
+        </div>
+    </section>
+</main>
+
+{{> layout/footer}}
