@@ -3,10 +3,13 @@ package com.example.demo.user;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo._core.utils.Resp;
+import com.example.demo._core.web.annotation.CheckValidation;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +31,16 @@ public class UserApiController {
                 "username", username,
                 "available", isAvailable,
                 "message", message));
+    }
+
+    @CheckValidation
+    @PostMapping("/api/users/join")
+    public Object join(@RequestBody UserRequest.JoinDTO requestDTO) {
+        // Step 3에서는 AOP 유효성 검사를 통과한 뒤 BCrypt 암호화와 실제 저장까지 수행한다.
+        var responseDTO = userService.join(requestDTO);
+        return Resp.ok(Map.of(
+                "message", "회원가입이 완료되었습니다.",
+                "user", responseDTO));
     }
 
 }

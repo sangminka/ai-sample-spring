@@ -13,8 +13,8 @@ public class BoardController {
     private final BoardService boardService;
     private final HttpSession session;
 
-    @GetMapping("/home")
-    public String home(){
-        return "home"; 
+    @GetMapping("/")
+    public String home() {
+        return "home";
     }
 }

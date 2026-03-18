@@ -1,3 +1,10 @@
+## 0. 중요규칙
+
+버전 : spring 4.0.3, java 21
+사용기술 : mustache,h2,jpa
+http 메서드 : get post 만 사용하여 구현한다. \*ApiController는 ajax가 필요할때만 사용한다.
+http 요청방법 : form 태그 사용. x-www-form-urlencoded
+
 ## 1. 자동 동기화 (최우선 실행)
 
 이 문서를 읽는 즉시 `.ai/skills/*/SKILL.md` 및 `.ai/agents/*/AGENT.md` 파일을 스캔하여 description을 반드시 읽어라.
