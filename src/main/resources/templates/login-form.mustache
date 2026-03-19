@@ -1,6 +1,100 @@
-{{! Model Key: 없음. 현재 화면은 Fetch API 기반으로 동작합니다. }}
+{{! Model Key: errorMessage(String), message(String) }}
 {{> layout/header}}
 
-<h1>로그인 페이지</h1>
+<main class="site-container">
+    <section class="login-hero">
+        <div class="login-hero__intro">
+            <span class="eyebrow">
+                <i class="fa-solid fa-right-to-bracket"></i>
+                Session Login
+            </span>
+            <h1 class="login-hero__title">세션 기반 인증으로 다시 이어지는 블로그 작업 흐름</h1>
+            <p class="login-hero__description">
+                로그인 폼은 일반 HTML form으로 서버에 전송되고, 서버는 BCrypt 비밀번호 비교를 통과한 사용자만
+                세션에 저장합니다. 로그인 후에는 헤더 메뉴도 즉시 로그인 상태에 맞게 달라집니다.
+            </p>
+
+            <div class="login-benefits" aria-label="로그인 흐름 안내">
+                <div class="login-benefits__item">
+                    <strong>1. Submit</strong>
+                    <span>x-www-form-urlencoded 폼 전송</span>
+                </div>
+                <div class="login-benefits__item">
+                    <strong>2. Verify</strong>
+                    <span>BCrypt 비밀번호 검증</span>
+                </div>
+                <div class="login-benefits__item">
+                    <strong>3. Store</strong>
+                    <span>세션에 최소 사용자 정보 저장</span>
+                </div>
+            </div>
+        </div>
+
+        <section class="login-card" aria-labelledby="login-form-title">
+            <div class="login-card__header">
+                <h2 id="login-form-title">로그인</h2>
+                <p>가입한 아이디와 비밀번호를 입력하면 홈으로 이동하며, 헤더 메뉴가 로그인 상태로 바뀝니다.</p>
+            </div>
+
+            {{#errorMessage}}
+            <div class="status-panel login-status" aria-live="polite">
+                <p class="status-panel__message" data-state="error">{{errorMessage}}</p>
+            </div>
+            {{/errorMessage}}
+
+            {{#message}}
+            <div class="status-panel login-status" aria-live="polite">
+                <p class="status-panel__message" data-state="success">{{message}}</p>
+            </div>
+            {{/message}}
+
+            {{^errorMessage}}
+            {{^message}}
+            <div class="status-panel login-status" aria-live="polite">
+                <p class="status-panel__message">아이디와 비밀번호를 입력한 뒤 로그인 버튼을 눌러주세요.</p>
+            </div>
+            {{/message}}
+            {{/errorMessage}}
+
+            <form class="login-form" action="/login" method="post">
+                <label class="form-field" for="username">
+                    <span class="form-field__label">아이디</span>
+                    <input
+                        id="username"
+                        name="username"
+                        class="form-field__input"
+                        type="text"
+                        placeholder="예: cos1234"
+                        autocomplete="username">
+                    <span class="form-field__helper">4자 이상 20자 이하 영문자/숫자 조합으로 입력합니다.</span>
+                </label>
+
+                <label class="form-field" for="password">
+                    <span class="form-field__label">비밀번호</span>
+                    <input
+                        id="password"
+                        name="password"
+                        class="form-field__input"
+                        type="password"
+                        placeholder="비밀번호 입력"
+                        autocomplete="current-password">
+                    <span class="form-field__helper">서버에서 BCrypt 비교 검증을 거친 뒤 세션이 생성됩니다.</span>
+                </label>
+
+                <div class="login-form__submit">
+                    <button class="button button--primary" type="submit">
+                        <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                        로그인
+                    </button>
+                </div>
+            </form>
+
+            <div class="login-card__actions">
+                <span>아직 회원이 아니라면</span>
+                <a class="login-card__link" href="/join-form">회원가입 하러가기</a>
+            </div>
+        </section>
+    </section>
+</main>
 
 {{> layout/footer}}

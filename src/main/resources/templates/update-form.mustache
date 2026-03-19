@@ -1,0 +1,168 @@
+{{! Model Key: userDetail(UserResponse.Detail), successMessage(String), errorMessage(String) }}
+{{> layout/header}}
+
+<main class="site-container">
+    <section class="profile-hero">
+        <div class="profile-hero__intro">
+            <span class="eyebrow">
+                <i class="fa-solid fa-id-card"></i>
+                My Account
+            </span>
+            <h1 class="profile-hero__title">내 정보를 다듬고, 필요하면 계정을 정리하는 마이페이지</h1>
+            <p class="profile-hero__description">
+                회원정보 수정은 일반 HTML form으로 서버에 전달되고, 회원 탈퇴는 현재 비밀번호를 한 번 더 확인한 뒤
+                내가 작성한 댓글과 게시글까지 순서대로 정리합니다.
+            </p>
+
+            <div class="profile-summary" aria-label="현재 계정 요약">
+                <div class="profile-summary__item">
+                    <strong>{{userDetail.username}}</strong>
+                    <span>로그인 아이디</span>
+                </div>
+                <div class="profile-summary__item">
+                    <strong>{{userDetail.email}}</strong>
+                    <span>연락 이메일</span>
+                </div>
+                <div class="profile-summary__item">
+                    <strong>{{userDetail.postcode}}</strong>
+                    <span>우편번호</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-shell">
+            <section class="profile-card" aria-labelledby="profile-form-title">
+                <div class="profile-card__header">
+                    <h2 id="profile-form-title">회원정보 수정</h2>
+                    <p>아이디는 그대로 두고, 이메일과 주소 정보를 최신 상태로 갱신합니다.</p>
+                </div>
+
+                {{#successMessage}}
+                <div class="status-panel profile-status" aria-live="polite">
+                    <p class="status-panel__message" data-state="success">{{successMessage}}</p>
+                </div>
+                {{/successMessage}}
+
+                {{#errorMessage}}
+                <div class="status-panel profile-status" aria-live="polite">
+                    <p class="status-panel__message" data-state="error">{{errorMessage}}</p>
+                </div>
+                {{/errorMessage}}
+
+                {{^successMessage}}
+                {{^errorMessage}}
+                <div class="status-panel profile-status" aria-live="polite">
+                    <p class="status-panel__message">수정 후 저장 버튼을 누르면 세션 정보도 최신 내용으로 갱신됩니다.</p>
+                </div>
+                {{/errorMessage}}
+                {{/successMessage}}
+
+                <form class="profile-form" action="/user/update" method="post">
+                    <label class="form-field" for="username">
+                        <span class="form-field__label">아이디</span>
+                        <input
+                            id="username"
+                            class="form-field__input"
+                            type="text"
+                            value="{{userDetail.username}}"
+                            readonly>
+                        <span class="form-field__helper">아이디는 현재 단계에서 변경하지 않습니다.</span>
+                    </label>
+
+                    <label class="form-field" for="email">
+                        <span class="form-field__label">이메일</span>
+                        <input
+                            id="email"
+                            name="email"
+                            class="form-field__input"
+                            type="email"
+                            value="{{userDetail.email}}"
+                            autocomplete="email">
+                    </label>
+
+                    <div class="profile-form__grid">
+                        <label class="form-field" for="postcode">
+                            <span class="form-field__label">우편번호</span>
+                            <input
+                                id="postcode"
+                                name="postcode"
+                                class="form-field__input"
+                                type="text"
+                                value="{{userDetail.postcode}}">
+                        </label>
+
+                        <label class="form-field" for="address">
+                            <span class="form-field__label">기본 주소</span>
+                            <input
+                                id="address"
+                                name="address"
+                                class="form-field__input"
+                                type="text"
+                                value="{{userDetail.address}}">
+                        </label>
+                    </div>
+
+                    <div class="profile-form__grid">
+                        <label class="form-field" for="detailAddress">
+                            <span class="form-field__label">상세 주소</span>
+                            <input
+                                id="detailAddress"
+                                name="detailAddress"
+                                class="form-field__input"
+                                type="text"
+                                value="{{userDetail.detailAddress}}">
+                        </label>
+
+                        <label class="form-field" for="extraAddress">
+                            <span class="form-field__label">참고 주소</span>
+                            <input
+                                id="extraAddress"
+                                name="extraAddress"
+                                class="form-field__input"
+                                type="text"
+                                value="{{userDetail.extraAddress}}">
+                        </label>
+                    </div>
+
+                    <div class="profile-form__submit">
+                        <button class="button button--primary" type="submit">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                            회원정보 수정
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <aside class="danger-card" aria-labelledby="delete-form-title">
+                <div class="danger-card__header">
+                    <span class="eyebrow eyebrow--danger">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        Danger Zone
+                    </span>
+                    <h2 id="delete-form-title">회원 탈퇴</h2>
+                    <p>탈퇴하면 내가 작성한 댓글과 게시글도 함께 삭제되며, 현재 세션은 즉시 종료됩니다.</p>
+                </div>
+
+                <form class="danger-card__form" action="/user/delete" method="post">
+                    <label class="form-field" for="delete-password">
+                        <span class="form-field__label">현재 비밀번호</span>
+                        <input
+                            id="delete-password"
+                            name="password"
+                            class="form-field__input"
+                            type="password"
+                            placeholder="현재 비밀번호 확인"
+                            autocomplete="current-password">
+                    </label>
+
+                    <button class="button button--danger" type="submit">
+                        <i class="fa-solid fa-user-slash"></i>
+                        회원 탈퇴
+                    </button>
+                </form>
+            </aside>
+        </div>
+    </section>
+</main>
+
+{{> layout/footer}}

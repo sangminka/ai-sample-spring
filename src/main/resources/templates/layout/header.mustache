@@ -22,11 +22,16 @@
                 <span>Blog Studio</span>
             </a>
             <nav class="site-nav" aria-label="주요 메뉴">
+                <a class="site-nav__link" href="/">홈</a>
+                {{^loginUser}}
                 <a class="site-nav__link" href="/join-form">회원가입</a>
-                <a class="site-nav__link" href="/login-form">로그인</a>
-                <a class="site-nav__link site-nav__link--cta" href="/board/save-form">글쓰기</a>
-                <a class="site-nav__link" href="/user/update-form">회원정보수정</a>
-                <a class="site-nav__link" href="/logout">로그아웃</a>
+                <a class="site-nav__link site-nav__link--cta" href="/login-form">로그인</a>
+                {{/loginUser}}
+                {{#loginUser}}
+                <span class="site-nav__welcome">{{username}}님 환영합니다</span>
+                <a class="site-nav__link" href="/user/update-form">마이페이지</a>
+                <a class="site-nav__link site-nav__link--cta" href="/logout">로그아웃</a>
+                {{/loginUser}}
             </nav>
         </div>
     </header>
