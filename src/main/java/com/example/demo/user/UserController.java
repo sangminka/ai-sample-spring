@@ -13,9 +13,15 @@ public class UserController {
     private final UserService userService;
     private final HttpSession session;
 
+    // 회원가입 페이지 반환환
     @GetMapping("/join-form")
     public String joinForm() {
         return "join-form";
+    }
+
+    @GetMapping("/login-form")
+    public String methodName() {
+        return "login-form";
     }
 
 }
