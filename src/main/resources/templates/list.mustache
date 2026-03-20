@@ -1,0 +1,51 @@
+{{! Model Key: boardList(List<BoardResponse.Min>) }}
+{{> layout/header}}
+
+<main class="site-container">
+    <section class="board-page">
+        <div class="board-page__intro">
+            <span class="eyebrow">
+                <i class="fa-solid fa-table-list"></i>
+                Step 1
+            </span>
+            <h1 class="board-page__title">페이징 없이 전체 게시글을 먼저 보는 목록 학습</h1>
+            <p class="board-page__description">
+                지금 단계에서는 LIMIT과 OFFSET 없이 전체 게시글을 한 번에 가져옵니다.
+                각 줄을 클릭하면 상세 페이지로 이동하고, 다음 단계에서 이 목록을 페이지 단위로 자르게 됩니다.
+            </p>
+        </div>
+
+        <section class="board-list-card" aria-labelledby="board-list-title">
+            <div class="board-list-card__header">
+                <h2 id="board-list-title">게시글 전체 목록</h2>
+                <p>한 줄형 목록으로 구조를 먼저 익힌 뒤, 다음 단계에서 페이징 UI를 덧붙입니다.</p>
+            </div>
+
+            <div class="board-list-table" role="list">
+                <div class="board-list-table__head" aria-hidden="true">
+                    <span>번호</span>
+                    <span>제목</span>
+                    <span>작성자</span>
+                    <span>작성일</span>
+                </div>
+
+                {{#boardList}}
+                <a class="board-line" role="listitem" href="/board/{{id}}">
+                    <span class="board-line__id">#{{id}}</span>
+                    <span class="board-line__title">{{title}}</span>
+                    <span class="board-line__author">{{username}}</span>
+                    <span class="board-line__date">{{createdAtText}}</span>
+                </a>
+                {{/boardList}}
+
+                {{^boardList}}
+                <div class="board-line board-line--empty">
+                    <span>등록된 게시글이 없습니다.</span>
+                </div>
+                {{/boardList}}
+            </div>
+        </section>
+    </section>
+</main>
+
+{{> layout/footer}}
