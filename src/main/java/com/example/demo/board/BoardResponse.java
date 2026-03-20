@@ -1,6 +1,7 @@
 package com.example.demo.board;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import lombok.Data;
 
@@ -22,7 +23,25 @@ public class BoardResponse {
         }
     }
 
-    // RULE: Detail DTO는 상세 정보를 저장한다.
+    @Data
+    public static class Page {
+        private Integer currentPage;
+        private Integer pageSize;
+        private Integer offset;
+        private Integer boardCount;
+        private List<Min> boardList;
+
+        public Page(Integer currentPage, Integer pageSize, Integer offset, List<Board> boardList) {
+            this.currentPage = currentPage;
+            this.pageSize = pageSize;
+            this.offset = offset;
+            this.boardCount = boardList.size();
+            this.boardList = boardList.stream()
+                    .map(Min::new)
+                    .toList();
+        }
+    }
+
     @Data
     public static class Detail {
         private Integer id;

@@ -1,4 +1,4 @@
-{{! Model Key: board(BoardResponse.Detail) }}
+{{! Model Key: board(BoardResponse.Detail), page(Integer) }}
 {{> layout/header}}
 
 <main class="site-container">
@@ -23,7 +23,7 @@
             </article>
 
             <div class="board-detail-card__actions">
-                <a class="button button--secondary" href="/board/list">
+                <a class="button button--secondary" href="/board/list?page={{page}}">
                     <i class="fa-solid fa-arrow-left"></i>
                     목록으로 돌아가기
                 </a>
