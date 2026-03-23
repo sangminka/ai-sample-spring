@@ -1,8 +1,7 @@
-{{! Model Key: board(BoardResponse.Detail), page(Integer) }}
+{{! Model Key: model(BoardResponse.DetailResponse) }}
 {{> layout/header}}
 
 <main class="site-container">
-    {{#board}}
     <section class="board-detail-page">
         <div class="board-detail-card">
             <div class="board-detail-card__header">
@@ -10,27 +9,26 @@
                     <i class="fa-solid fa-book-open"></i>
                     Detail
                 </span>
-                <h1 class="board-detail-card__title">{{title}}</h1>
+                <h1 class="board-detail-card__title">{{model.board.title}}</h1>
                 <div class="board-detail-card__meta">
-                    <span>작성자 {{username}}</span>
-                    <span>작성일 {{createdAtText}}</span>
-                    <span>번호 #{{id}}</span>
+                    <span>작성자 {{model.board.username}}</span>
+                    <span>작성일 {{model.board.createdAtText}}</span>
+                    <span>번호 #{{model.board.id}}</span>
                 </div>
             </div>
 
             <article class="board-detail-card__content">
-                {{content}}
+                {{model.board.content}}
             </article>
 
             <div class="board-detail-card__actions">
-                <a class="button button--secondary" href="/board/list?page={{page}}">
+                <a class="button button--secondary" href="/board/list?page={{model.page}}">
                     <i class="fa-solid fa-arrow-left"></i>
                     목록으로 돌아가기
                 </a>
             </div>
         </div>
     </section>
-    {{/board}}
 </main>
 
 {{> layout/footer}}
