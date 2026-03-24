@@ -22,7 +22,8 @@
             </article>
 
             <div class="board-detail-card__actions">
-                <a class="button button--secondary" href="/board/list?page={{model.page}}">
+                <a class="button button--secondary"
+                    href="/board/list?page={{model.page}}{{#model.hasKeyword}}&keyword={{model.encodedKeyword}}{{/model.hasKeyword}}">
                     <i class="fa-solid fa-arrow-left"></i>
                     목록으로 돌아가기
                 </a>

@@ -1,7 +1,10 @@
 package com.example.demo.board;
 
+import java.nio.charset.StandardCharsets;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import org.springframework.web.util.UriUtils;
 
 import lombok.Data;
 
@@ -71,12 +74,19 @@ public class BoardResponse {
     public static class ListResponse {
         private List<Min> boards;
         private PagingResponse paging;
+        private String keyword;
+        private String encodedKeyword;
+        private boolean hasKeyword;
 
-        public ListResponse(List<Board> boards, PagingResponse paging) {
+        public ListResponse(List<Board> boards, PagingResponse paging, String keyword) {
             this.boards = boards.stream()
                     .map(Min::new)
                     .toList();
             this.paging = paging;
+            var normalizedKeyword = 정리된키워드(keyword);
+            this.keyword = 출력용키워드(normalizedKeyword);
+            this.encodedKeyword = 출력용키워드(인코딩된키워드(normalizedKeyword));
+            this.hasKeyword = normalizedKeyword != null;
         }
     }
 
@@ -101,10 +111,46 @@ public class BoardResponse {
     public static class DetailResponse {
         private Detail board;
         private Integer page;
+        private String keyword;
+        private String encodedKeyword;
+        private boolean hasKeyword;
 
-        public DetailResponse(Board board, Integer page) {
+        public DetailResponse(Board board, Integer page, String keyword) {
             this.board = new Detail(board);
             this.page = page;
+            var normalizedKeyword = 정리된키워드(keyword);
+            this.keyword = 출력용키워드(normalizedKeyword);
+            this.encodedKeyword = 출력용키워드(인코딩된키워드(normalizedKeyword));
+            this.hasKeyword = normalizedKeyword != null;
         }
+    }
+
+    private static String 정리된키워드(String keyword) {
+        if (keyword == null) {
+            return null;
+        }
+
+        var trimmedKeyword = keyword.trim();
+        if (trimmedKeyword.isBlank()) {
+            return null;
+        }
+
+        return trimmedKeyword;
+    }
+
+    private static String 인코딩된키워드(String keyword) {
+        if (keyword == null) {
+            return null;
+        }
+
+        return UriUtils.encode(keyword, StandardCharsets.UTF_8);
+    }
+
+    private static String 출력용키워드(String keyword) {
+        if (keyword == null) {
+            return "";
+        }
+
+        return keyword;
     }
 }

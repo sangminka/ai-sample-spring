@@ -17,6 +17,36 @@
             </p>
         </div>
 
+        <section class="board-list-card" aria-labelledby="board-search-title">
+            <div class="board-list-card__header">
+                <h2 id="board-search-title">게시글 검색</h2>
+                <p>제목 또는 내용에 포함된 키워드를 입력하고 SSR 방식으로 검색합니다.</p>
+                <form method="get" action="/board/list" class="row g-2 align-items-end">
+                    <input type="hidden" name="page" value="1">
+                    <div class="col-12 col-md-9">
+                        <label class="form-label" for="keyword">검색어</label>
+                        <input id="keyword"
+                            type="text"
+                            name="keyword"
+                            class="form-control"
+                            value="{{model.keyword}}"
+                            placeholder="제목 또는 내용을 입력하세요">
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <button class="button w-100" type="submit">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            검색
+                        </button>
+                    </div>
+                </form>
+                <div class="mt-3" aria-live="polite">
+                    <p id="board-search-loading" class="text-secondary mb-1" hidden>검색 중...</p>
+                    <p id="board-search-error" class="text-danger mb-0" hidden></p>
+                </div>
+            </div>
+        </section>
+
+        <div id="board-search-results" data-api-url="/api/board/search">
         <section class="board-page__summary" aria-label="pagination summary">
             <div class="board-page__chip">
                 <span>page</span>
@@ -42,15 +72,21 @@
                 <span>pages</span>
                 <strong>{{model.paging.totalPageCount}}</strong>
             </div>
+            {{#model.hasKeyword}}
+            <div class="board-page__chip">
+                <span>keyword</span>
+                <strong>{{model.keyword}}</strong>
+            </div>
+            {{/model.hasKeyword}}
         </section>
 
         <section class="board-list-card" aria-labelledby="board-list-title">
             <div class="board-list-card__header">
-                <h2 id="board-list-title">현재 페이지 게시글과 전체 페이지 번호 목록</h2>
+                <h2 id="board-list-title">현재 페이지 게시글과 최대 5개 페이지 번호 목록</h2>
                 <p>
-                    이제 목록 아래에서 전체 페이지 번호를 한 번에 확인할 수 있습니다.
+                    이제 목록 아래에서 현재 구간의 페이지 번호를 최대 5개까지 확인할 수 있습니다.
                     현재 페이지는 강조해서 보여주고, 다른 페이지 번호를 누르면 해당 목록으로 이동합니다.
-                    마지막 페이지를 넘는 주소는 강제로 되돌리지 않고 빈 목록으로 렌더링합니다.
+                    `이전`과 `다음` 버튼으로 다른 페이지로 이동하고, 마지막 페이지를 넘는 주소는 강제로 되돌리지 않고 빈 목록으로 렌더링합니다.
                 </p>
                 <div class="board-page__formula">
                     <span>total pages = ceil(total count / page size)</span>
@@ -67,7 +103,9 @@
                 </div>
 
                 {{#model.boards}}
-                <a class="board-line" role="listitem" href="/board/{{id}}?page={{model.paging.currentPage}}">
+                <a class="board-line"
+                    role="listitem"
+                    href="/board/{{id}}?page={{model.paging.currentPage}}{{#model.hasKeyword}}&keyword={{model.encodedKeyword}}{{/model.hasKeyword}}">
                     <span class="board-line__id">#{{id}}</span>
                     <span class="board-line__title">{{title}}</span>
                     <span class="board-line__author">{{username}}</span>
@@ -77,7 +115,12 @@
 
                 {{^model.boards}}
                 <div class="board-line board-line--empty">
+                    {{#model.hasKeyword}}
+                    <span>'{{model.keyword}}' 검색 결과가 없습니다.</span>
+                    {{/model.hasKeyword}}
+                    {{^model.hasKeyword}}
                     <span>이 페이지에는 게시글이 없습니다.</span>
+                    {{/model.hasKeyword}}
                 </div>
                 {{/model.boards}}
             </div>
@@ -91,6 +134,9 @@
                     {{#model.paging.hasPrev}}
                     <form method="get" action="/board/list" class="board-pagination__form">
                         <input type="hidden" name="page" value="{{model.paging.prevPage}}">
+                        {{#model.hasKeyword}}
+                        <input type="hidden" name="keyword" value="{{model.keyword}}">
+                        {{/model.hasKeyword}}
                         <button class="button button--secondary" type="submit">
                             <i class="fa-solid fa-arrow-left"></i>
                             이전
@@ -101,6 +147,9 @@
                     {{#model.paging.hasNext}}
                     <form method="get" action="/board/list" class="board-pagination__form">
                         <input type="hidden" name="page" value="{{model.paging.nextPage}}">
+                        {{#model.hasKeyword}}
+                        <input type="hidden" name="keyword" value="{{model.keyword}}">
+                        {{/model.hasKeyword}}
                         <button class="button" type="submit">
                             다음
                             <i class="fa-solid fa-arrow-right"></i>
@@ -115,13 +164,16 @@
                     {{/current}}
 
                     {{^current}}
-                    <a href="/board/list?page={{number}}" class="page-number">{{number}}</a>
+                    <a href="/board/list?page={{number}}{{#model.hasKeyword}}&keyword={{model.encodedKeyword}}{{/model.hasKeyword}}"
+                        class="page-number">{{number}}</a>
                     {{/current}}
                     {{/model.paging.pageNumbers}}
                 </div>
             </div>
         </section>
+        </div>
     </section>
 </main>
 
+<script src="/js/board-search.js"></script>
 {{> layout/footer}}
